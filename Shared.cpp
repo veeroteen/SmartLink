@@ -12,6 +12,10 @@ shared_ptr_toy::shared_ptr_toy() {
 	controller = new Control();
 	toy = new Toy();
 }
+shared_ptr_toy::shared_ptr_toy(Toy toy) {
+	controller = new Control();
+	this->toy = new Toy(toy);
+}
 shared_ptr_toy::~shared_ptr_toy() {
 	controller->count--;
 	if (controller->count == 0) {
@@ -19,9 +23,14 @@ shared_ptr_toy::~shared_ptr_toy() {
 		delete controller;
 	}
 }
-std::string shared_ptr_toy::getName()const {
-	return toy->getName();
+Toy* shared_ptr_toy::get()const {
+	if (toy != nullptr) {
+		return toy;
+	}
+	return nullptr;
 }
+
+
 shared_ptr_toy& shared_ptr_toy::operator = (const shared_ptr_toy& oth) {
 	if (this == &oth) {
 		return *this;
@@ -38,3 +47,16 @@ shared_ptr_toy& shared_ptr_toy::operator = (const shared_ptr_toy& oth) {
 	controller->count++;
 	return *this;
 }
+
+shared_ptr_toy make_shared_toy() {
+	return shared_ptr_toy();
+}
+
+shared_ptr_toy make_shared_toy(std::string name) {
+	return shared_ptr_toy(name);
+}
+shared_ptr_toy make_shared_toy(Toy &toy) {
+	return shared_ptr_toy(toy);
+}
+
+
